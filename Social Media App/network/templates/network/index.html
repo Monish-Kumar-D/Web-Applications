@@ -1,0 +1,134 @@
+{% extends "network/layout.html" %}
+{% load static %}
+{% block body %}
+<div class="container mt-4">
+    <div class="profile-header">
+        <h3>All Posts</h3>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <ul class="list-unstyled">
+                {% for post in posts %}
+                <li class="post-card" id="post-{{ post.id }}">
+                    {% if user.is_authenticated %}
+                    <div class="post-header">
+                        <a href="{% url 'profile' post.username.id %}">{{ post.username }}</a>
+                    </div>
+                    {% else %}
+                    <div class="post-header">
+                        <a>{{ post.username }}</a>
+                    </div>
+                    {% endif %}
+                    <div class="post-timestamp">
+                        {{ post.timestamp }}
+                    </div>
+                    <div class="post-content" id="post-content-{{ post.id }}">
+                        {{ post.content }}
+                    </div>
+                    <div class="post-footer">
+                        {% if user.is_authenticated %}
+                            {% if post.username != request.user  %}
+                                {% if post.liked_by_user %}
+                                    <span class="like-button" data-id="{{ post.id }}">
+                                        <i class="fas fa-heart"></i> Unlike
+                                    </span>
+                                {% else %}
+                                    <span class="like-button" data-id="{{ post.id }}">
+                                        <i class="far fa-heart"></i> Like
+                                    </span>
+                                {% endif %}
+                            {% else %}
+                            <span>
+                                <i></i>
+                            </span>
+                          
+                            {% endif %}
+                        {% else %}
+                        <span>
+                            <i></i>
+                        </span>
+                        {% endif %}
+                        <span class="like-count" id="like-count-{{ post.id }}" > Likes : {{ post.likes.count }}</span>
+                    </div>
+                    <div class="post-footer">
+                        {% if post.username == request.user %}
+                            <button class="edit-button" data-id="{{ post.id }}">Edit</button>
+                            <div class="edit-form" id="edit-form-{{ post.id }}" style="display: none;">
+                                <textarea id="edit-content-{{ post.id }}">{{ post.content }}</textarea>
+                                <button class="save-button" data-id="{{ post.id }}">Save</button>
+                            </div>
+                        {% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+        {% if page_obj %}
+            <div class="pagination" style="text-align:center; display:flex; justify-content:center;">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+        
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+        
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+</div>
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+        document.querySelectorAll('.like-button').forEach(button => {
+            button.onclick = () => {
+                const postId = button.dataset.id;
+                fetch(`/like/${postId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                .then(response => {
+                    return response.json();
+                })
+                .then(result => {
+                    if (result.liked) {
+                        button.innerHTML = `<i class="fas fa-heart"></i> Unlike`;
+                    } else {
+                        button.innerHTML = `<i class="far fa-heart"></i> Like`;
+                    }   
+                    document.getElementById(`like-count-${postId}`).innerText = `Likes : ${result.like_count}`;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            
+            };
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+</script>
+{% endblock %}
+

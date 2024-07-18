@@ -1,0 +1,39 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<center>
+    <div style="width:550px; height:300px; text-align:center; margin-top:100px;">
+    <h2 style="color:white;">Create a new Listing</h2>
+
+    <form action="{% url 'new_entry' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label style="color:white;">Item Name</label>
+            <input autofocus class="form-control" type="text" name="itemname" placeholder="Item Name" required>
+        </div>
+        <div class="form-group">
+            <label style="color:white;">Initial Price</label>
+            <input class="form-control" type="numeric" name="least_bid" placeholder="Initial Price of the item" required>
+        </div>
+        <div class="form-group">
+            <label for="cars" style="color:white;">Category : </label>
+
+            <select name="category" id="category">
+                {% for category in categorys %}
+              <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label style="color:white;">Link to the image</label>
+            <input class="form-control" type="link" name="imageurl" placeholder="Paste here" required>
+        </div>
+        <div class="form-group">
+            <label style="color:white;">Description</label>
+            <textarea autofocus class="form-control" type="text" name="description" placeholder="Write the description" required></textarea>
+        </div>
+        <input class="btn btn-primary" type="submit" value="Submit">
+    </form>
+</div>
+</center>
+{% endblock %}

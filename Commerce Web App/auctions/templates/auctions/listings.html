@@ -1,0 +1,106 @@
+{% extends 'auctions/layout.html' %}
+{% load static %}
+{% block body %}
+{% for item in contents%}
+{% if message != None%}
+<h2 style="color:white"> <center>{{ message }}</center></h2>
+{% endif %}
+{% if user == item.owner %}
+{% if item.active == False %}
+<h2 style="color:white"><center>Congrats! Your item sold!!</center></h2>
+{% endif %}
+{% endif %}
+{% if user == item.least_bid.user_name %}
+{% if item.active == False %}
+<h2 style="color:white"><center>Congrats! You won the auction</center></h2>
+{% endif %}
+{% endif %}
+
+<label>
+<div style="margin-left:85px; margin-top:35px;">
+  <img src="{{ item.imageurl }}" alt="{{ item.itemname }}" height = "500px"  style="border: solid;border-radius: 25px;">
+</div>
+</label>
+
+<label>
+  <center>
+  <div style="margin-right:35px; text-align: left;">
+      <h2 class="card-title" style="color:blue;  padding-bottom : 50px; padding-left:60px;">{{ item.itemname.capitalize }}</h2>
+      <h3 style="color:white" style="margin-top:10px;"> &emsp; &emsp;Current Bid : ${{ item.least_bid.current_bid }}</h3>
+      <h3 style="color:white" style="margin-top:10px;"> &emsp;  &emsp;Category : {{ item.category }}</h3>
+      {% if user.is_authenticated and item.active and user != item.owner%}
+            {% if inwatchlist %}
+               <form action="{% url 'remove' id=item.id %}" method="post">
+                 {% csrf_token %}
+                     <input type="submit" class="btn btn-danger" value="Remove from WatchList" style="margin-left:60px; margin-top:15px;">
+               </form>
+            {% else %}
+                <form action="{% url 'add' id=item.id %}" method = "post">
+                {% csrf_token %}
+                     <input type="submit" class="btn btn-success" value="Add to watchlist" style="margin-left:60px; margin-top:15px;">
+                </form>
+            {% endif %}
+      {% endif %}
+      {% if isthisowner and item.active %}
+      <form action="{% url 'close_auctions' item.id %}" method="post">
+          {% csrf_token %}
+          <input class="btn btn-danger" type="submit" value="Close the auction" style="margin-left:60px; margin-top:15px;">
+      </form>
+      {% elif item.active %}
+      </div>
+      </center>
+      </label>
+      <div>
+      <form action="{% url 'listings' item.id %}" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+              <label>Your Bid:</label>
+              <input class="form-control" type="numeric" name="least_bid" placeholder="{{ item.least_bid.current_bid }}" required style="margin-left:85px; margin-top:25px; width: 350px">
+          </div>
+          <input class="btn btn-primary" type="submit" value="Place Your Bid" style="margin-left:85px; margin-top:5px;">
+      </form>
+      </div>
+      {% endif %}
+  </div>
+</center>
+</label>
+
+
+
+<div style="margin-left:85px; margin-top:35px;">
+<h4 style="color:white"> Description : </h4>
+<p style="color:white">{{item.description}}</p>
+</br>
+<h5 style="color:white">Owner : {{ item.owner }}</h5>
+</br>
+<div style="width:550px;">
+<form action="{% url 'comments' item.id %}" method="post">
+    {% csrf_token %}
+    <textarea id="content" name="comments" placeholder="your comments" class="form-control" required style="height: 200px;"></textarea>
+    <br>
+    <input class="btn btn-primary" value = "POST" type="submit">
+</form>
+</div>
+</br>
+<h3 style="color:white">Comments</h3>
+</br><div class="list-group">
+{% for comment in comments %}
+<a class="list-group-item list-group-item-action flex-column align-items-start" style="background-color:rgba(0, 28, 51,255);">
+{% if comments != None %}
+<label>
+    <img src="{% static 'auctions/user-avatar.png' %}" alt="avatar" height="20px">
+</label>
+<label>
+<div class="d-flex w-100 justify-content-between">
+    <h5 style="color:white; margin-left:5px; margin-top:2px;"> {{ comment.user }}</h5>
+</div>
+</label>
+    <p class="mb-1" style="color:white">{{ comment.comment }}</p>
+{% endif %}
+{% endfor %}</a>
+
+</div>
+</div>
+
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,100 @@
+ .logo{
+    margin:auto;
+    width: 50%;
+    height:100px;
+    width:280px;
+    padding: 300px 0px 0px 0px;
+ }
+ .navbar{
+   padding:10px;
+   text-align: right;
+   margin:10px;
+ }
+ .images{
+   margin:8px;
+ }
+ .search_bar{
+   display:flex;
+   width:450px;
+   height:35px;
+   margin:8px;
+   border-radius:35px;
+   text-align:center;
+   box-shadow:none;
+ }
+ .buttons{
+   margin: 11px 4px;
+   padding: 0 16px;
+   height: 36px;
+   min-width: 54px;
+   text-align: center;
+   cursor: pointer;
+ }
+ .button1{
+   margin:8px;
+   height:25px;
+   padding:1px;
+   width:100px;
+ }
+.button2{
+ margin:8px;
+ height:25px;
+ padding-left:1px;
+ padding-right:8px;
+ width:100px;
+}
+ .body{
+   margin: auto;
+   width: 50%;
+ }
+ .img1{
+  margin:auto;
+  width: 50%;
+  height:28px;
+  width:90px;
+  padding: 25px 0px 0px 20px;
+}
+ .abc{
+  font-family: arial,sans-serif;
+  color:#d93025;
+  margin-left:25px;
+  padding:35px 0px 20px 0px;
+  font-size:20px;
+ }
+ .fpw,.fpw2{
+  font-family: 16px arial,sans-serif;
+  color:#333333;
+  font-style: inherit;
+  font-size: 100%;
+  margin-left: 25px;
+  margin-top: 45px;
+ }
+ .tbox1{
+  margin-left:75px;
+  width:500px;
+  height:33px;
+ }
+ .tbox2{
+  margin-left:10px;
+  width:500px;
+  height:33px;
+ }
+ .tbox3{
+  margin-left:50px;
+  width:500px;
+  height:33px;
+ }
+ .tbox4{
+  margin-left:42px;
+  width:500px;
+  height:33px;
+ }
+ .asbutton{
+  margin-left:587px;
+  margin-top:25px;
+  height:35px;
+  width:150px;
+  color:white;
+  background-color:#4d90fe;
+  border:1px solid #3079ed;
+ }

@@ -1,0 +1,108 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="profile-header">
+        <h3>Connection's Posts</h3>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="container">
+            <ul class="list-unstyled">
+                {% for post in posts1 %}
+                <li class="post-card">
+                    <div class="post-header">
+                        <a href="{% url 'profile' post.username.id %}">{{ post.username }}</a>
+                    </div>
+                    <div class="post-timestamp">
+                        {{ post.timestamp }}
+                    </div>
+                    <div class="post-content">
+                        {{ post.content }}
+                    </div>
+                    <div class="post-footer">
+                        {% if post.liked_by_user %}
+                            <span class="like-button" data-id="{{ post.id }}">
+                                <i class="fas fa-heart"></i> Unlike
+                            </span>
+                        {% else %}
+                            <span class="like-button" data-id="{{ post.id }}">
+                                <i class="far fa-heart"></i> Like
+                            </span>
+                        {% endif %}
+                        <span class="like-count" id="like-count-{{ post.id }}">Likes : {{ post.likes.count }}</span>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        </div>
+
+    </div>
+</div>
+{% if page_obj %}
+<div class="pagination" style="text-align:center; display:flex; justify-content:center;">
+<span class="step-links">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+    {% endif %}
+
+    <span class="current">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+    {% endif %}
+</span>
+</div>
+{% endif %}
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+        document.querySelectorAll('.like-button').forEach(button => {
+            button.onclick = () => {
+                const postId = button.dataset.id;
+
+                fetch(`/like/${postId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                .then(response => {
+                    return response.json();
+                })
+                .then(result => {
+                    if (result.liked) {
+                        button.innerHTML = `<i class="fas fa-heart"></i> Unlike`;
+                    } else {
+                        button.innerHTML = `<i class="far fa-heart"></i> Like`;
+                    }
+                    document.getElementById(`like-count-${postId}`).innerText = `Likes : ${result.like_count}`;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            };
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+</script>
+{% endblock %}

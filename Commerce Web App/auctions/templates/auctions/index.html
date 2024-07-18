@@ -1,0 +1,35 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<center>
+    <h2 style="color:white; margin-bottom: 50px;">Active Listings</h2>
+    {% for content in contents %}
+    {% if content.active %}
+    <div class="row row-cols-2 row-cols-md-1 g-6">
+
+    <div class = "col">
+      <div class="card mb-3" style="max-width: 850px; margin-left:50px; background-color:rgba(0, 28, 51,255);border-radius: 25px; border:transparent">
+        <div class="row g-0" >
+          <div class="col-md-4" style='width: 500px; height:200px;'>
+            <img src="{{ content.imageurl }}" class="img-fluid rounded-start" alt="{{ content.itemname }}" style='width: 400px; height:200px; border: solid;border-radius: 25px;'>
+          </div>
+          <div class="col-md-8" style="width:200px">
+            <div class="card-body" style="text-align: left">
+              <h5 class="card-title" style="color:white" style="margin-top:10px;">{{ content.itemname }}</h5>
+              <h6 style="color:white" style="margin-top:10px;">Price : ${{ content.least_bid.current_bid }}</h6>
+              <h6 style="color:white" style="margin-top:10px;">Category : {{ content.category }}</h6>
+              {% if user.is_authenticated %}
+          <a href="{% url 'listings' content.id %}" class="btn btn-primary" type="submit" style="margin-top:20px;">View</a>
+          {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+      {% endif %}
+    {% endfor %}
+    </div>
+    </div>
+</center>
+{% endblock %}

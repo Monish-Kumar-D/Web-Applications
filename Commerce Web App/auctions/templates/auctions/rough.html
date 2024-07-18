@@ -1,0 +1,29 @@
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'index' %}">Active Listings<span class="sr-only">(current)</span></a>
+      </li>
+      {% if user.is_authenticated %}
+      <li class="nav-item">
+          <a class="nav-link disabled" href="{% url 'new_entry' %}">Add New</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="{% url 'category' %}">Category</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="{% url 'watchlist1' %}">WatchList</a>
+        </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+      </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'register' %}">Register</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>

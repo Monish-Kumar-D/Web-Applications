@@ -1,0 +1,62 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="profile-header">
+        <h3>{{ profile_user.username }}</h3>
+    </div>
+    <div class="profile-info">
+        {% if profile_user != request.user %}
+            {% if is_following %}
+                <button id="follow-button" data-id="{{ profile_user.id }}" data-following="true" class="follow-button">Unfollow</button>
+            {% else %}
+                <button id="follow-button" data-id="{{ profile_user.id }}" data-following="false" class="follow-button">Follow</button>
+            {% endif %}
+
+        {% endif %}
+    </div>
+    <div class="container">
+        <p style="text-align:center;">
+            <span id="followers_count" >Followers: {{ followers_count }}</span>
+            <span>Following: {{ following_count }}</span>
+            </p>
+        <ul class="list-unstyled">
+            {% for post in posts %}
+            <li id="post-{{ post.id }}" class="post-card">
+                <div class="post-header">
+                    {{ post.username }}
+                </div>
+                <div class="post-timestamp">
+                    {{ post.timestamp }}
+                </div>
+                <div class="post-content" id="post-content-{{ post.id }}">
+                    {{ post.content }}
+                </div>
+                <div class="post-footer">
+                    {% if post.username == request.user %}
+                        <button class="edit-button" data-id="{{ post.id }}">Edit</button>
+                    {% endif %}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% if page_obj %}
+<div class="pagination" style="text-align:center; display:flex; justify-content:center;">
+<span class="step-links">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+    {% endif %}
+
+    <span class="current">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+    {% endif %}
+</span>
+</div>
+{% endif %}
+{% endblock %}

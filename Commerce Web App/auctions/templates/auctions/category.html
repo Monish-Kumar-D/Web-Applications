@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+{% for category in categorys %}
+<center>
+<ul style="text-align:left; align-items:center;">
+    <li>
+        <form action = "{% url 'category' %}", method="post">
+           <a href="{% url 'specific_category' category %} "><h3 style="color:white;">{{ category }}</h3></a>
+        </form>
+    </li>
+</ul>
+</center>
+{% endfor %}
+
+{% endblock %}

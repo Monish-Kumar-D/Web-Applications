@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+</head>
+<body style="background-color:rgba(0, 28, 51,255); font-family:'Poppins';">
+    <div style="text-align:top; margin:50px;">
+    <h1 style="Color:blue; text-align:center;">Calculator</h1></div>
+    <center>
+
+    <div class="calculator">
+        <div class="display">
+            <input type="text" id="result" readonly>
+        </div>
+        <div class="buttons">
+            <button onclick="appendToResult('7')">7</button>
+            <button onclick="appendToResult('8')">8</button>
+            <button onclick="appendToResult('9')">9</button>
+            <button onclick="appendToResult('/')">/</button>
+
+            <button onclick="appendToResult('4')">4</button>
+            <button onclick="appendToResult('5')">5</button>
+            <button onclick="appendToResult('6')">6</button>
+            <button onclick="appendToResult('*')">*</button>
+
+            <button onclick="appendToResult('1')">1</button>
+            <button onclick="appendToResult('2')">2</button>
+            <button onclick="appendToResult('3')">3</button>
+            <button onclick="appendToResult('-')">-</button>
+
+            <button onclick="appendToResult('0')">0</button>
+            <button onclick="appendToResult('.')">.</button>
+            <button onclick=" deleteLastChar()">DEL</button>
+            <button onclick="appendToResult('+')">+</button>
+
+            <button onclick="clearResult()" class="span-two" style="background-color: #ff4444;">C</button>
+            <button onclick="calculateResult()" class="span-two" style="background-color:blue">=</button>
+        </div>
+    </div>
+    <div class="history">
+        <h2 >History</h2>
+        <ul id="history-list"></ul>
+    </div>
+    </center>
+</body>
+</html>
